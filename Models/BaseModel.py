@@ -1,7 +1,8 @@
 import peewee
+
 from config import settings
 
-db = peewee.SqliteDatabase('docevendas_bot.db')
+db = peewee.SqliteDatabase('some_time_bot.db')
 
 class BaseModel(peewee.Model):
     """Classe model base"""

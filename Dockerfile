@@ -11,4 +11,3 @@ ENV LANGUAGE pt_BR:pt
 ENV LC_ALL pt_BR.UTF-8
 ENV MODE dev
 RUN pip install -r requirements.txt
-CMD python ./main.py

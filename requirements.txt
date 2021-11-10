@@ -2,6 +2,7 @@ APScheduler==3.6.3
 autopep8==1.5.7
 cachetools==4.2.2
 certifi==2021.10.8
+dynaconf==3.1.5
 peewee==3.14.4
 prettytable==2.2.1
 pycodestyle==2.8.0
