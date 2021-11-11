@@ -1,17 +1,12 @@
-import locale
 import logging
-import os
-import sys
 
-from Models.Group import Group
-from Models.Event import Event
 import peewee
+from telegram.ext import CallbackQueryHandler, CommandHandler, Updater
 
-from telegram import ForceReply, ParseMode, Update
-from telegram.ext import (CallbackContext, CommandHandler, Filters,
-                          MessageHandler, Updater)
-
+from commands import inline_handler, set_scheduled_date, start
 from config import settings
+from Models.Event import Event
+from Models.Group import Group
 
 # Logging
 logging.basicConfig(
@@ -19,18 +14,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
-def start(update: Update, context: CallbackContext) -> None:
-    user = update.effective_user
-    update.message.reply_markdown_v2(
-        fr'Olá {user.mention_markdown_v2()}\!'
-    )
-
-
-def teste(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(str(update.message.chat_id) + ": " + update.message.text)
-
-
 
 def main() -> None:
     """Inicia o bot."""
@@ -42,7 +25,8 @@ def main() -> None:
 
     # Seta o comando /start para chamar sua respectiva função
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("teste", teste))
+    dispatcher.add_handler(CommandHandler("waitFor",set_scheduled_date))
+    dispatcher.add_handler(CallbackQueryHandler(inline_handler))
 
     # Inicia o Bot de fato
     updater.start_polling()
