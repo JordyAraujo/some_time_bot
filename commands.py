@@ -1,10 +1,8 @@
-from telegram import ParseMode, ReplyKeyboardRemove, Update
-from telegram.ext import (CallbackContext, CallbackQueryHandler,
-                          CommandHandler, Updater)
+from telegram import ReplyKeyboardRemove, Update
+from telegram.ext import CallbackContext
 
 import messages
 import telegramcalendar
-import telegramjcalendar
 import utils
 
 
