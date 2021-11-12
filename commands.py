@@ -1,6 +1,9 @@
 from telegram import ReplyKeyboardRemove, Update
 from telegram.ext import CallbackContext
 
+from Models.Group import Group
+from Models.User import User
+from Models.Event import Event
 import messages
 import telegramcalendar
 import utils
@@ -12,11 +15,35 @@ def start(update: Update, context: CallbackContext) -> None:
         fr'Olá {user.mention_markdown_v2()}\!'
     )
 
-
 def set_scheduled_date(update, context):
-    chat_id = str(update.message.chat_id)
-    data = telegramcalendar.create_calendar()
-    update.message.reply_text(text=messages.calendar_message, reply_markup=data)
+    chat_is_group = update.message.chat.type == "group"
+    
+    if(chat_is_group):
+        group_id = str(update.message.chat.id)
+        group_name = str(update.message.chat.title)
+        group, created = Group.get_or_create(
+            group_id = group_id, 
+            defaults={
+                'group_name': group_name
+                }
+            )
+    else:
+        user_id = str(update.message.chat.id)
+        user_username = str(update.message.chat.username)
+        user, created = User.get_or_create(
+            user_id = user_id, 
+            defaults={
+                'user_username': user_username
+                }
+            )
+    date = telegramcalendar.create_calendar()
+    event = Event(
+        event_title = context.args[0],
+        event_group = group if chat_is_group else None, 
+        event_user = None if chat_is_group else user,
+        event_due = date
+    )
+    update.message.reply_text(text=messages.calendar_message, reply_markup=event.event_due)
 
 
 def inline_handler(update, context):

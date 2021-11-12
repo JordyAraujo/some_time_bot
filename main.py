@@ -7,6 +7,7 @@ from commands import inline_handler, set_scheduled_date, start
 from config import settings
 from Models.Event import Event
 from Models.Group import Group
+from Models.User import User
 
 # Logging
 logging.basicConfig(
@@ -36,6 +37,13 @@ def main() -> None:
 
 
 if __name__ == '__main__':
+    try:
+        User.create_table()
+        print("Users table created succesfully")
+    except peewee.OperationalError:
+        print("Users table already exists")
+
+
     try:
         Group.create_table()
         print("Groups table created succesfully")
